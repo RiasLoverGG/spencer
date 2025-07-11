@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spencer - Cuentas de Streaming Ilimitadas</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons (WhatsApp, Instagram, TikTok) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0V4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Fondo gris claro */
+            color: #374151; /* Texto gris oscuro */
+            overflow-x: hidden; /* Evita el scroll horizontal */
+        }
+        .hero-section {
+            background: linear-gradient(to right, #6366f1, #8b5cf6); /* Gradiente púrpura */
+            color: white;
+            padding-top: 5rem; /* Espacio para el logo y menú */
+            padding-bottom: 5rem;
+            border-bottom-left-radius: 2rem;
+            border-bottom-right-radius: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            animation: fadeIn 1s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .floating-button {
+            position: fixed;
+            right: 20px;
+            padding: 15px;
+            border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+            z-index: 1000;
+            color: white;
+        }
+        .floating-button:hover {
+            transform: scale(1.1);
+        }
+        .whatsapp-button {
+            bottom: 100px; /* Ajuste para dejar espacio al de Instagram */
+            background-color: #25d366; /* Verde de WhatsApp */
+        }
+        .instagram-button {
+            bottom: 160px; /* Ajuste para dejar espacio al de TikTok */
+            background-color: #E1306C; /* Rosa de Instagram */
+        }
+        .tiktok-button {
+            bottom: 220px;
+            background-color: #222222; /* Negro de TikTok */
+        }
+        .card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            border-radius: 1.5rem; /* Más redondeado */
+            overflow: hidden; /* Asegura que el contenido respete el redondeo */
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        .product-image {
+            width: 100%;
+            height: 180px; /* Altura fija para las imágenes de producto */
+            object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse */
+            border-top-left-radius: 1.5rem;
+            border-top-right-radius: 1.5rem;
+        }
+        .section-title {
+            animation: slideInUp 1s ease-out;
+        }
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .feature-icon {
+            font-size: 3rem; /* Tamaño más grande para los íconos de características */
+            margin-bottom: 1rem;
+            color: #6366f1; /* Color púrpura */
+        }
+
+        /* Mobile Navigation Overlay */
+        .mobile-nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transform: translateX(100%); /* Start off-screen */
+            transition: transform 0.4s ease-in-out;
+        }
+        .mobile-nav-overlay.open {
+            transform: translateX(0); /* Slide in */
+        }
+        .mobile-nav-overlay a {
+            color: white;
+            font-size: 2rem;
+            padding: 1rem 0;
+            transition: color 0.3s ease;
+        }
+        .mobile-nav-overlay a:hover {
+            color: #8b5cf6;
+        }
+        .close-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2.5rem;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .close-button:hover {
+            transform: rotate(90deg);
+        }
+
+        /* Hamburger Icon (3 ratitas) */
+        .hamburger-icon {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 20px;
+            cursor: pointer;
+            z-index: 1001; /* Above other content but below overlay */
+        }
+        .hamburger-icon span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: white;
+            border-radius: 2px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Adjust hamburger for mobile and hide desktop nav */
+        @media (min-width: 768px) { /* md breakpoint */
+            .hamburger-icon {
+                display: none; /* Hide hamburger on desktop */
+            }
+            .desktop-nav {
+                display: flex !important; /* Show desktop nav */
+            }
+        }
+        @media (max-width: 767px) { /* Below md breakpoint (mobile) */
+            .desktop-nav {
+                display: none; /* Hide desktop nav on mobile */
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header Section (Simplified for mobile-first approach) -->
+    <header class="absolute top-0 left-0 right-0 z-10 p-4 flex justify-between items-center md:px-8">
+        <!-- Logo -->
+        <a href="#inicio" class="text-3xl font-bold text-white rounded-lg p-2">
+            <!-- Updated logo URL from Imgur and increased size -->
+            <img src="https://i.imgur.com/QhQ7hRE.jpeg" alt="Spencer Logo" class="h-12 md:h-16 rounded-lg">
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="desktop-nav hidden md:flex space-x-6">
+            <a href="#nosotros" class="text-white hover:text-indigo-200 font-medium rounded-lg p-2 transition duration-300">Sobre Nosotros</a>
+            <a href="#elegirnos" class="text-white hover:text-indigo-200 font-medium rounded-lg p-2 transition duration-300">Por Qué Elegirnos</a>
+            <a href="#contacto" class="text-white hover:text-indigo-200 font-medium rounded-lg p-2 transition duration-300">Contacto</a>
+        </nav>
+
+        <!-- Hamburger Icon for Mobile -->
+        <div class="hamburger-icon md:hidden" id="hamburgerButton">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay">
+        <span class="close-button" id="closeNavButton">&times;</span>
+        <nav class="flex flex-col items-center">
+            <a href="#nosotros" class="mb-4" onclick="closeMobileNav()">Sobre Nosotros</a>
+            <a href="#elegirnos" class="mb-4" onclick="closeMobileNav()">Por Qué Elegirnos</a>
+            <a href="#contacto" onclick="closeMobileNav()">Contacto</a>
+        </nav>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero-section text-center">
+        <div class="container mx-auto px-4 py-16 md:py-24">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight animate-fade-in-down">Tu Acceso al Entretenimiento Ilimitado</h1>
+            <p class="text-lg md:text-xl mb-8 opacity-90 max-w-2xl mx-auto animate-fade-in-up">
+                En Spencer, te ofrecemos cuentas de streaming confiables y asequibles para que disfrutes de tus películas, series y música favoritas sin interrupciones.
+            </p>
+            <a href="#productos" class="bg-white text-indigo-600 px-8 py-4 rounded-full text-lg font-bold hover:bg-gray-100 transition duration-300 ease-in-out shadow-lg inline-block animate-scale-in">
+                Explorar Cuentas
+            </a>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="productos" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800 section-title">Nuestras Cuentas de Streaming</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <!-- Product Card 1: Netflix -->
+                <div class="bg-white rounded-xl shadow-lg card animate-fade-in">
+                    <img src="https://images.ctfassets.net/4cd45et68cgf/4nBnsuPq03diC5eHXnQYx/d48a4664cdc48b6065b0be2d0c7bc388/Netflix-Logo.jpg" alt="Netflix Logo" class="product-image">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-2 text-center">Netflix Premium</h3>
+                        <p class="text-gray-600 mb-4 text-center">Disfruta de películas y series en 4K Ultra HD.</p>
+                        <button class="mt-4 w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition duration-300 ease-in-out shadow-md">
+                            Comprar Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product Card 2: Disney+ -->
+                <div class="bg-white rounded-xl shadow-lg card animate-fade-in">
+                    <img src="https://cloudfront-us-east-1.images.arcpublishing.com/infobae/5EGT4P4UKRGAZPDR52FKJJW4YU.png" alt="Disney+ Logo" class="product-image">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-2 text-center">Disney+ Estándar</h3>
+                        <p class="text-gray-600 mb-4 text-center">Todo el universo Disney, Pixar, Marvel y más.</p>
+                        <button class="mt-4 w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition duration-300 ease-in-out shadow-md">
+                            Comprar Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product Card 3: HBO Max -->
+                <div class="bg-white rounded-xl shadow-lg card animate-fade-in">
+                    <img src="https://play-lh.googleusercontent.com/_QCSCcFxvczdHctbqn5QHbbxJefgAZKwD_Um_eQJ8yCX-1NopcGubuGGszd23Bfn3Q" alt="HBO Max Logo" class="product-image">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-2 text-center">HBO Max Plan Anual</h3>
+                        <p class="text-gray-600 mb-4 text-center">Las mejores series y películas exclusivas.</p>
+                        <button class="mt-4 w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition duration-300 ease-in-out shadow-md">
+                            Comprar Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product Card 4: Spotify Premium -->
+                <div class="bg-white rounded-xl shadow-lg card animate-fade-in">
+                    <img src="https://www.liderlogo.es/wp-content/uploads/2022/12/pasted-image-0-4.png" alt="Spotify Logo" class="product-image">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-2 text-center">Spotify Premium</h3>
+                        <p class="text-gray-600 mb-4 text-center">Música sin límites y sin anuncios.</p>
+                        <button class="mt-4 w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition duration-300 ease-in-out shadow-md">
+                            Comprar Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product Card 5: Amazon Prime Video -->
+                <div class="bg-white rounded-xl shadow-lg card animate-fade-in">
+                    <img src="https://tecnogaming.com/wp-content/uploads/2024/07/PrimeVideo-Logo-Header.jpg" alt="Amazon Prime Video Logo" class="product-image">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-2 text-center">Prime Video</h3>
+                        <p class="text-gray-600 mb-4 text-center">Series y películas originales de Amazon.</p>
+                        <button class="mt-4 w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition duration-300 ease-in-out shadow-md">
+                            Comprar Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product Card 6: YouTube Premium -->
+                <div class="bg-white rounded-xl shadow-lg card animate-fade-in">
+                    <img src="https://indiehoy.com/wp-content/uploads/2020/01/youtubepremium-youtubemusic.png" alt="YouTube Premium Logo" class="product-image">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-2 text-center">YouTube Premium</h3>
+                        <p class="text-gray-600 mb-4 text-center">Videos sin anuncios y reproducción en segundo plano.</p>
+                        <button class="mt-4 w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition duration-300 ease-in-out shadow-md">
+                            Comprar Ahora
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section id="elegirnos" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800 section-title">¿Por Qué Elegir Spencer?</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 text-center">
+                <div class="p-6 rounded-xl shadow-lg bg-gray-50 card animate-fade-in">
+                    <i class="fas fa-shield-alt feature-icon"></i> <!-- Icono de seguridad -->
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-2">Confiabilidad Garantizada</h3>
+                    <p class="text-gray-600">Nuestras cuentas son 100% legítimas y estables, asegurando una experiencia sin interrupciones.</p>
+                </div>
+                <div class="p-6 rounded-xl shadow-lg bg-gray-50 card animate-fade-in">
+                    <i class="fas fa-paper-plane feature-icon"></i> <!-- Icono de entrega rápida -->
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-2">Entrega Instantánea</h3>
+                    <p class="text-gray-600">Recibe tu cuenta de inmediato después de la compra, ¡listo para usar!</p>
+                </div>
+                <div class="p-6 rounded-xl shadow-lg bg-gray-50 card animate-fade-in">
+                    <i class="fas fa-headset feature-icon"></i> <!-- Icono de soporte -->
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-2">Soporte 24/7</h3>
+                    <p class="text-gray-600">Nuestro equipo está siempre disponible para ayudarte con cualquier duda o problema.</p>
+                </div>
+                <div class="p-6 rounded-xl shadow-lg bg-gray-50 card animate-fade-in">
+                    <i class="fas fa-lock feature-icon"></i> <!-- Icono de seguridad -->
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-2">Seguridad Total</h3>
+                    <p class="text-gray-600">Tus datos y transacciones están protegidos con la más alta tecnología de seguridad.</p>
+                </div>
+                <div class="p-6 rounded-xl shadow-lg bg-gray-50 card animate-fade-in">
+                    <i class="fas fa-dollar-sign feature-icon"></i> <!-- Icono de dinero -->
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-2">Precios Insuperables</h3>
+                    <p class="text-gray-600">Obtén el mejor valor por tu dinero con nuestras ofertas exclusivas.</p>
+                </div>
+                <div class="p-6 rounded-xl shadow-lg bg-gray-50 card animate-fade-in">
+                    <i class="fas fa-sync-alt feature-icon"></i> <!-- Icono de reemplazo -->
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-2">Garantía de Reemplazo</h3>
+                    <p class="text-gray-600">Si hay algún problema, te reemplazamos la cuenta sin costo adicional.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="nosotros" class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800 section-title">Sobre Nosotros</h2>
+            <div class="bg-white p-8 rounded-xl shadow-lg text-center max-w-3xl mx-auto animate-fade-in">
+                <p class="text-lg text-gray-700 leading-relaxed mb-4">
+                    En Spencer, nos dedicamos a ofrecer una experiencia de entretenimiento de primera clase. Entendemos la importancia de un acceso ininterrumpido a tus plataformas de streaming favoritas, por eso nos esforzamos en proporcionar cuentas confiables y seguras a precios competitivos.
+                </p>
+                <p class="text-lg text-gray-700 leading-relaxed">
+                    Nuestra misión es simple: hacer que el streaming de calidad sea accesible para todos. Contamos con un equipo dedicado a asegurar la satisfacción del cliente y a brindar soporte rápido y eficiente. ¡Únete a la familia Spencer y disfruta del mejor entretenimiento hoy mismo!
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800 section-title">Contáctanos</h2>
+            <div class="bg-gray-50 p-8 rounded-xl shadow-lg max-w-xl mx-auto animate-fade-in">
+                <p class="text-lg text-gray-700 text-center mb-6">
+                    ¿Tienes preguntas o necesitas ayuda? No dudes en contactarnos a través de WhatsApp o nuestras redes sociales.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <a href="https://wa.me/593987837518?text=Hola%2C%20tengo%20una%20consulta%20sobre%20las%20cuentas%20de%20streaming."
+                       target="_blank"
+                       class="bg-green-500 text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-green-600 transition duration-300 ease-in-out shadow-md flex items-center gap-2">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                    <a href="https://www.instagram.com/spencer.uio?igsh=MXR1a2VqMHY2bXNhYg=="
+                       target="_blank"
+                       class="bg-pink-500 text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-pink-600 transition duration-300 ease-in-out shadow-md flex items-center gap-2">
+                        <i class="fab fa-instagram"></i> Instagram
+                    </a>
+                    <a 
