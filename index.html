@@ -365,4 +365,147 @@
                 </p>
             </div>
         </div>
-    </
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800 section-title">Contáctanos</h2>
+            <div class="bg-gray-50 p-8 rounded-xl shadow-lg max-w-xl mx-auto animate-fade-in">
+                <p class="text-lg text-gray-700 text-center mb-6">
+                    ¿Tienes preguntas o necesitas ayuda? No dudes en contactarnos a través de WhatsApp o nuestras redes sociales.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <a href="https://wa.me/593987837518?text=Hola%2C%20tengo%20una%20consulta%20sobre%20las%20cuentas%20de%20streaming."
+                       target="_blank"
+                       class="bg-green-500 text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-green-600 transition duration-300 ease-in-out shadow-md flex items-center gap-2">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                    <a href="https://www.instagram.com/spencer.uio?igsh=MXR1a2VqMHY2bXNhYg=="
+                       target="_blank"
+                       class="bg-pink-500 text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-pink-600 transition duration-300 ease-in-out shadow-md flex items-center gap-2">
+                        <i class="fab fa-instagram"></i> Instagram
+                    </a>
+                    <a href="https://www.tiktok.com/@spencer.uio.ec6?_t=ZM-8xvVq05lM6K&_r=1"
+                       target="_blank"
+                       class="bg-black text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-800 transition duration-300 ease-in-out shadow-md flex items-center gap-2">
+                        <i class="fab fa-tiktok"></i> TikTok
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12 rounded-t-lg shadow-inner">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-4">&copy; 2024 Spencer. Todos los derechos reservados.</p>
+            <div class="flex justify-center space-x-6">
+                <a href="#inicio" class="text-gray-400 hover:text-white transition duration-300">Inicio</a>
+                <a href="#productos" class="text-gray-400 hover:text-white transition duration-300">Productos</a>
+                <a href="#nosotros" class="text-gray-400 hover:text-white transition duration-300">Sobre Nosotros</a>
+                <a href="#contacto" class="text-gray-400 hover:text-white transition duration-300">Contacto</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Buttons -->
+    <a href="https://wa.me/593987837518?text=Hola%2C%20tengo%20una%20consulta%20sobre%20las%20cuentas%20de%20streaming."
+       target="_blank"
+       class="floating-button whatsapp-button">
+        <i class="fab fa-whatsapp text-2xl"></i>
+    </a>
+    <a href="https://www.instagram.com/spencer.uio?igsh=MXR1a2VqMHY2bXNhYg=="
+       target="_blank"
+       class="floating-button instagram-button">
+        <i class="fab fa-instagram text-2xl"></i>
+    </a>
+    <a href="https://www.tiktok.com/@spencer.uio.ec6?_t=ZM-8xvVq05lM6K&_r=1"
+       target="_blank"
+       class="floating-button tiktok-button">
+        <i class="fab fa-tiktok text-2xl"></i>
+    </a>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Mobile Navigation Toggle
+        const hamburgerButton = document.getElementById('hamburgerButton');
+        const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+        const closeNavButton = document.getElementById('closeNavButton');
+
+        function openMobileNav() {
+            mobileNavOverlay.classList.add('open');
+            document.body.style.overflowY = 'hidden'; // Prevent scrolling when nav is open
+        }
+
+        function closeMobileNav() {
+            mobileNavOverlay.classList.remove('open');
+            document.body.style.overflowY = 'auto'; // Restore scrolling
+        }
+
+        hamburgerButton.addEventListener('click', openMobileNav);
+        closeNavButton.addEventListener('click', closeMobileNav);
+
+        // Optional: Close nav if clicked outside (useful for larger mobile devices)
+        mobileNavOverlay.addEventListener('click', function(event) {
+            if (event.target === mobileNavOverlay) {
+                closeMobileNav();
+            }
+        });
+
+        // Intersection Observer for animations on scroll
+        const faders = document.querySelectorAll('.animate-fade-in, .animate-fade-in-down, .animate-fade-in-up, .animate-scale-in, .section-title');
+
+        const appearOptions = {
+            threshold: 0.2, // Trigger when 20% of the element is visible
+            rootMargin: "0px 0px -50px 0px" // Adjust when element enters viewport
+        };
+
+        const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    return;
+                } else {
+                    entry.target.style.opacity = "1";
+                    entry.target.style.transform = "translateY(0)";
+                    entry.target.style.transform = "scale(1)"; /* For scale-in animation */
+                    appearOnScroll.unobserve(entry.target);
+                }
+            });
+        }, appearOptions);
+
+        faders.forEach(fader => {
+            fader.style.opacity = "0"; // Hide elements initially
+            // Apply initial transform based on animation type
+            if (fader.classList.contains('animate-fade-in-down')) {
+                fader.style.transform = "translateY(-20px)";
+            } else if (fader.classList.contains('animate-fade-in-up')) {
+                fader.style.transform = "translateY(20px)";
+            } else if (fader.classList.contains('animate-scale-in')) {
+                fader.style.transform = "scale(0.9)";
+            }
+            appearOnScroll.observe(fader);
+        });
+
+        // Add specific animation styles for initial hidden state
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .animate-fade-in { opacity: 0; transition: opacity 1s ease-out; }
+            .animate-fade-in-down { opacity: 0; transform: translateY(-20px); transition: opacity 1s ease-out, transform 1s ease-out; }
+            .animate-fade-in-up { opacity: 0; transform: translateY(20px); transition: opacity 1s ease-out, transform 1s ease-out; }
+            .animate-scale-in { opacity: 0; transform: scale(0.9); transition: opacity 1s ease-out, transform 1s ease-out; }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
